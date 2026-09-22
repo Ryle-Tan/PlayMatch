@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getGenres } from "../lib/api.js";
+import { errorTitle } from "../lib/errorCopy.js";
 import Loader from "./Loader.jsx";
 import ErrorState from "./ErrorState.jsx";
 import ControllerIcon from "./ControllerIcon.jsx";
@@ -14,7 +15,7 @@ import "./StartScreen.css";
  */
 export default function StartScreen() {
   const [status, setStatus] = useState("checking"); // checking | ready | error
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // an ApiError: has .code and .message
   const [genreCount, setGenreCount] = useState(0);
   const [attempt, setAttempt] = useState(0);
 
@@ -29,7 +30,7 @@ export default function StartScreen() {
       })
       .catch((err) => {
         if (err.name === "AbortError") return;
-        setError(err.message);
+        setError(err);
         setStatus("error");
       });
 
@@ -65,8 +66,8 @@ export default function StartScreen() {
 
             {status === "error" && (
               <ErrorState
-                title="No connection"
-                message={error}
+                title={errorTitle(error.code)}
+                message={error.message}
                 onRetry={() => setAttempt((n) => n + 1)}
               />
             )}
