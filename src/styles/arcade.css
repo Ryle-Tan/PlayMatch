@@ -1,0 +1,90 @@
+/*
+ * Arcade atmosphere: the dark room the cabinet sits in.
+ * Everything here is decorative and ignores pointer events.
+ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* A soft teal/gold wash so the flat navy is not dead black. */
+.backdrop__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(46, 196, 182, 0.13), transparent 42%),
+    radial-gradient(circle at 88% 92%, rgba(247, 179, 43, 0.1), transparent 45%);
+}
+
+/* ---- Floating game symbols ○ □ △ + ---- */
+
+.symbol {
+  position: absolute;
+  font-family: var(--font-body);
+  line-height: 1;
+  opacity: 0.5;
+  will-change: transform;
+  animation: symbol-float 14s ease-in-out infinite;
+}
+
+.symbol--teal {
+  color: var(--neon-teal);
+  filter: drop-shadow(0 0 8px rgba(46, 196, 182, 0.75));
+}
+
+.symbol--gold {
+  color: var(--neon-gold);
+  filter: drop-shadow(0 0 8px rgba(247, 179, 43, 0.75));
+}
+
+.symbol--orange {
+  color: var(--neon-orange);
+  filter: drop-shadow(0 0 8px rgba(232, 111, 44, 0.75));
+}
+
+/* One shared keyframe, offset per symbol via animation-delay,
+   so the whole field animates on a single cheap transform. */
+@keyframes symbol-float {
+  0%,
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(0, -26px, 0) rotate(8deg); }
+}
+
+/* ---- Starburst rays behind the hero title ---- */
+
+.starburst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(150%, 760px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* Hard-edged spokes, kept faint so the title stays readable. */
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(46, 196, 182, 0.16) 0deg 5deg,
+    transparent 5deg 16deg
+  );
+  /* Fade the rays out towards the rim. */
+  mask-image: radial-gradient(circle at 50% 50%, #000 12%, rgba(0, 0, 0, 0.55) 45%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 12%, rgba(0, 0, 0, 0.55) 45%, transparent 72%);
+  animation: starburst-turn 90s linear infinite;
+}
+
+@keyframes starburst-turn {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Motion is decoration here, so it all switches off on request. */
+@media (prefers-reduced-motion: reduce) {
+  .symbol,
+  .starburst {
+    animation: none;
+  }
+}

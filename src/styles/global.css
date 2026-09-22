@@ -1,5 +1,5 @@
 @import "./tokens.css";
-@import "./crt.css";
+@import "./arcade.css";
 @import "./ui.css";
 
 *,
@@ -16,16 +16,11 @@ body {
 
 body {
   min-height: 100dvh;
-  background-color: var(--bg-deep);
-  /* Faint neon bloom in the corners so the background is not flat black. */
-  background-image:
-    radial-gradient(circle at 15% 0%, rgba(164, 101, 255, 0.16), transparent 45%),
-    radial-gradient(circle at 85% 100%, rgba(255, 46, 136, 0.14), transparent 45%);
-  background-attachment: fixed;
-  color: var(--text);
+  background-color: var(--bg);
+  color: var(--cream);
   font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -33,20 +28,25 @@ body {
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* The decorative discs are meant to sit partly off-screen. `clip`
+     trims them at the viewport edge without creating a sideways
+     scrollbar, and unlike `hidden` it leaves vertical scrolling and
+     position:fixed children alone. */
+  overflow-x: clip;
 }
 
 h1,
 h2,
 h3 {
-  font-family: var(--font-pixel);
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
+  font-family: var(--font-title);
+  font-weight: 400; /* Lilita One ships a single weight */
+  line-height: 1.1;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
 a {
-  color: var(--neon-cyan);
+  color: var(--neon-teal);
 }
 
 img {
@@ -57,17 +57,19 @@ img {
   display: none !important;
 }
 
-/* Keyboard users must always be able to see where they are. */
 :focus-visible {
-  outline: 3px solid var(--neon-amber);
+  outline: 3px solid var(--neon-gold);
   outline-offset: 3px;
 }
 
+/* Content sits above the decorative backdrop. */
 .app-shell {
+  position: relative;
+  z-index: 1;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  max-width: 1100px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: var(--s-4);
 }
@@ -76,4 +78,8 @@ img {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .app-shell { padding: var(--s-5); }
 }

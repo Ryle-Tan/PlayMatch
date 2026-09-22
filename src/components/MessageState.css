@@ -5,33 +5,47 @@
   justify-content: center;
   gap: var(--s-4);
   text-align: center;
-  padding: var(--s-7) var(--s-4);
+  padding: var(--s-6) var(--s-5);
   margin: auto;
-  max-width: 420px;
+  max-width: 460px;
+  width: 100%;
 }
 
+/* The badge is an icon, so it is allowed to glow. */
 .msg-state__icon {
-  font-size: 40px;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--neon-teal);
+  color: var(--neon-teal);
+  box-shadow: var(--glow-teal);
+  font-size: 24px;
   line-height: 1;
-  color: var(--neon-violet);
 }
 
-.msg-state--error .msg-state__icon {
-  color: var(--neon-magenta);
-  text-shadow: var(--glow-magenta);
+.msg-state__icon--orange {
+  border-color: var(--neon-orange);
+  color: var(--neon-orange);
+  box-shadow: var(--glow-orange);
 }
 
+/* Titles glow; the body paragraph below does not. */
 .msg-state__title {
-  font-size: 14px;
-  color: var(--text);
+  font-size: clamp(20px, 4.5vw, 26px);
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  text-shadow: var(--glow-teal);
 }
 
-.msg-state--error .msg-state__title {
-  color: var(--neon-magenta);
+.msg-state__title--orange {
+  color: var(--neon-orange);
+  text-shadow: var(--glow-orange);
 }
 
 .msg-state__body {
   margin: 0;
-  color: var(--text-dim);
   font-size: 15px;
+  color: var(--cream-dim);
 }

@@ -1,5 +1,7 @@
-import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import StartScreen from "./components/StartScreen.jsx";
+import ArcadeBackdrop from "./components/ArcadeBackdrop.jsx";
+import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import EmptyState from "./components/EmptyState.jsx";
 
@@ -8,11 +10,11 @@ function ComingSoon({ name }) {
   return (
     <EmptyState
       icon="▦"
-      title={`${name} — COMING SOON`}
+      title={`${name} — coming soon`}
       message="This screen gets built in a later step."
       action={
-        <Link to="/" className="pixel-btn pixel-btn--ghost">
-          BACK TO START
+        <Link to="/" className="btn btn--ghost">
+          Back to start
         </Link>
       }
     />
@@ -20,25 +22,34 @@ function ComingSoon({ name }) {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+
+  // The start screen carries its own oversized title, so the compact
+  // wordmark would only repeat it.
+  const showHeader = pathname !== "/";
+
   return (
-    <div className="app-shell">
-      <main className="app-main">
-        <Routes>
-          <Route path="/" element={<StartScreen />} />
-          <Route path="/filters" element={<ComingSoon name="FILTERS" />} />
-          <Route path="/swipe" element={<ComingSoon name="SWIPE DECK" />} />
-          <Route path="/game/:id" element={<ComingSoon name="GAME DETAILS" />} />
-          <Route path="/matches" element={<ComingSoon name="MATCH LIST" />} />
-          <Route path="/result" element={<ComingSoon name="GAMER PERSONALITY" />} />
-          {/* Anything unknown goes back to the attract screen. */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
+    <>
+      <ArcadeBackdrop />
 
-      <Footer />
+      <div className="app-shell">
+        {showHeader && <Header />}
 
-      {/* Sits above everything and ignores clicks — purely cosmetic. */}
-      <div className="crt-overlay" aria-hidden="true" />
-    </div>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<StartScreen />} />
+            <Route path="/filters" element={<ComingSoon name="Filters" />} />
+            <Route path="/swipe" element={<ComingSoon name="Swipe deck" />} />
+            <Route path="/game/:id" element={<ComingSoon name="Game details" />} />
+            <Route path="/matches" element={<ComingSoon name="Match list" />} />
+            <Route path="/result" element={<ComingSoon name="Gamer personality" />} />
+            {/* Anything unknown goes back to the attract screen. */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }

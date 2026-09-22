@@ -1,6 +1,6 @@
 import "./Loader.css";
 
-/** Blinking arcade-style loading text with a pixel block spinner. */
+/** Three glowing arcade blocks with a mono label. */
 export default function Loader({ label = "LOADING" }) {
   return (
     <div className="loader" role="status" aria-live="polite">

@@ -4,46 +4,49 @@
   align-items: center;
   justify-content: center;
   gap: var(--s-4);
-  padding: var(--s-7) var(--s-4);
+  padding: var(--s-5) var(--s-4);
   text-align: center;
 }
 
 .loader__blocks {
   display: flex;
-  gap: var(--s-2);
+  gap: var(--s-3);
 }
 
 .loader__blocks span {
   width: 14px;
   height: 14px;
-  background: var(--neon-cyan);
-  box-shadow: var(--glow-cyan);
-  animation: loader-hop 0.9s steps(2, end) infinite;
+  border-radius: 4px;
+  background: var(--neon-teal);
+  box-shadow: var(--glow-teal);
+  animation: loader-hop 0.9s ease-in-out infinite;
 }
 
 .loader__blocks span:nth-child(2) {
-  background: var(--neon-magenta);
-  box-shadow: var(--glow-magenta);
+  background: var(--neon-gold);
+  box-shadow: var(--glow-gold);
   animation-delay: 0.15s;
 }
 
 .loader__blocks span:nth-child(3) {
-  background: var(--neon-lime);
-  box-shadow: var(--glow-lime);
+  background: var(--neon-orange);
+  box-shadow: var(--glow-orange);
   animation-delay: 0.3s;
 }
 
 @keyframes loader-hop {
-  0%, 100% { transform: translateY(0); opacity: 0.35; }
-  50%      { transform: translateY(-10px); opacity: 1; }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-11px); }
 }
 
+/* The label is body text, so it stays plain. */
 .loader__text {
-  font-family: var(--font-pixel);
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 12px;
-  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  color: var(--cream-dim);
   margin: 0;
-  letter-spacing: 0.1em;
 }
 
 .loader__dots {
@@ -59,6 +62,5 @@
   .loader__blocks span,
   .loader__dots {
     animation: none;
-    opacity: 1;
   }
 }

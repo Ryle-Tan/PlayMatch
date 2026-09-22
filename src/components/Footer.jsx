@@ -7,13 +7,13 @@ import "./Footer.css";
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <p>
+      <p className="site-footer__credit">
         Game data by{" "}
         <a href="https://rawg.io" target="_blank" rel="noreferrer noopener">
           RAWG
         </a>
       </p>
-      <p className="site-footer__note">PlayMatch — a student project</p>
+      <p className="eyebrow site-footer__note">PlayMatch · student project</p>
     </footer>
   );
 }

@@ -1,53 +1,137 @@
 .start {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  gap: var(--s-5);
-  padding: var(--s-6) var(--s-2);
+  padding: var(--s-5) 0;
 }
 
-.start__logo {
+/* Holds the panel plus the discs that sit behind it. */
+.start__stage {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* ---- Solid circles peeking out from behind the panel ---- */
+
+.start__disc {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.start__disc--teal {
+  width: 150px;
+  height: 150px;
+  background: var(--neon-teal);
+  top: -54px;
+  left: -46px;
+}
+
+.start__disc--gold {
+  width: 118px;
+  height: 118px;
+  background: var(--neon-gold);
+  bottom: -40px;
+  right: -34px;
+}
+
+.start__disc--orange {
+  width: 92px;
+  height: 92px;
+  background: var(--neon-orange);
+  top: 38%;
+  right: -44px;
+}
+
+.start__disc--teal-sm {
+  width: 70px;
+  height: 70px;
+  background: var(--neon-teal);
+  bottom: 16%;
+  left: -32px;
+}
+
+/* ---- The main panel ---- */
+
+.start__panel {
+  position: relative;
+  z-index: 1;
+  background: var(--panel);
+  border-radius: var(--r-card);
+  padding: var(--s-6) var(--s-5) var(--s-5);
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  align-items: center;
+  gap: var(--s-4);
+  overflow: hidden; /* keeps the starburst inside the rounded corners */
+}
+
+/* ---- Hero title ---- */
+
+.start__hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: var(--s-5) 0 var(--s-4);
 }
 
 .start__title {
-  font-size: clamp(22px, 8vw, 46px);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.15em;
-}
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-title);
+  font-size: clamp(38px, 12vw, 88px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--neon-gold);
 
-.start__title-play {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px rgba(34, 231, 255, 0.7), 4px 4px 0 #0a2a33;
-}
+  /* Thick navy outline, drawn behind the fill so the letters stay full
+     weight. paint-order is honoured by current browsers; where it is
+     not, the outline simply sits centred and the title still reads. */
+  -webkit-text-stroke: 5px var(--bg);
+  paint-order: stroke fill;
 
-.start__title-match {
-  color: var(--neon-magenta);
-  text-shadow: 0 0 10px rgba(255, 46, 136, 0.7), 4px 4px 0 #33001a;
+  /* Solid orange offset for the 3D block, plus a gold glow. */
+  text-shadow:
+    5px 5px 0 var(--neon-orange),
+    0 0 26px rgba(247, 179, 43, 0.5);
+
+  transform: rotate(-3deg);
 }
 
 .start__tagline {
-  font-family: var(--font-pixel);
-  font-size: clamp(7px, 2.4vw, 10px);
-  color: var(--text-faint);
-  letter-spacing: 0.35em;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(11px, 3vw, 14px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--neon-teal);
   margin: 0;
 }
+
+/* ---- Controller ---- */
+
+.start__controller {
+  width: clamp(110px, 32vw, 168px);
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(46, 196, 182, 0.55));
+}
+
+/* ---- Copy and call to action ---- */
 
 .start__pitch {
-  max-width: 44ch;
-  color: var(--text-dim);
+  max-width: 42ch;
+  color: var(--cream-dim);
   margin: 0;
 }
 
-.start__cabinet {
+.start__cta {
+  width: 100%;
+  margin-top: var(--s-2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,44 +141,43 @@
 }
 
 .start__coin {
-  font-size: 14px;
-  padding: var(--s-4) var(--s-6);
-  text-decoration: none;
-  animation: coin-pulse 1.4s steps(2, end) infinite;
+  animation: coin-throb 2.2s ease-in-out infinite;
 }
 
-@keyframes coin-pulse {
-  0%, 100% { filter: brightness(1); }
-  50%      { filter: brightness(1.35); }
+/* The glow breathes; the button itself does not move. */
+@keyframes coin-throb {
+  0%, 100% { box-shadow: var(--glow-gold); }
+  50%      { box-shadow: var(--glow-gold-strong); }
 }
 
 .start__ready {
-  font-family: var(--font-pixel);
-  font-size: 8px;
-  color: var(--neon-lime);
-  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cream-dim);
   margin: 0;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--s-2);
 }
 
 .start__led {
-  width: 8px;
-  height: 8px;
-  background: var(--neon-lime);
-  box-shadow: var(--glow-lime);
-  animation: led-blink 2s steps(1, end) infinite;
-}
-
-@keyframes led-blink {
-  0%, 70%   { opacity: 1; }
-  71%, 100% { opacity: 0.25; }
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--neon-teal);
+  box-shadow: var(--glow-teal);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .start__coin,
-  .start__led {
-    animation: none;
-  }
+  .start__coin { animation: none; }
+}
+
+/* Pull the discs in on small screens so they stay on the page. */
+@media (max-width: 560px) {
+  .start__disc--teal    { width: 104px; height: 104px; top: -34px; left: -26px; }
+  .start__disc--gold    { width: 84px;  height: 84px;  bottom: -26px; right: -18px; }
+  .start__disc--orange  { width: 62px;  height: 62px;  right: -22px; }
+  .start__disc--teal-sm { width: 48px;  height: 48px;  left: -18px; }
 }
