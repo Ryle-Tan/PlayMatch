@@ -1,0 +1,22 @@
+.trailer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.trailer__video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: var(--bg);
+  border: 2px solid var(--neon-gold);
+  border-radius: var(--r-card);
+  box-shadow: var(--glow-gold);
+}
+
+.trailer__caption {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cream-faint);
+}

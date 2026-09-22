@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import StartScreen from "./components/StartScreen.jsx";
 import FilterScreen from "./components/FilterScreen.jsx";
 import SwipeDeck from "./components/SwipeDeck.jsx";
+import DetailsView from "./components/DetailsView.jsx";
 import ArcadeBackdrop from "./components/ArcadeBackdrop.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -42,7 +43,7 @@ export default function App() {
             <Route path="/" element={<StartScreen />} />
             <Route path="/filters" element={<FilterScreen />} />
             <Route path="/swipe" element={<SwipeDeck />} />
-            <Route path="/game/:id" element={<ComingSoon name="Game details" />} />
+            <Route path="/game/:id" element={<DetailsView />} />
             <Route path="/matches" element={<ComingSoon name="Match list" />} />
             <Route path="/result" element={<ComingSoon name="Gamer personality" />} />
             {/* Anything unknown goes back to the attract screen. */}

@@ -48,10 +48,32 @@ export function getMatches() {
   return Array.isArray(list) ? list : [];
 }
 
+/**
+ * Keep only the fields the match list and the personality card need.
+ *
+ * Likes can come from a deck card or from the details view, and those
+ * two RAWG responses are shaped slightly differently — normalising
+ * here means everything downstream sees one consistent record.
+ */
+function toMatchRecord(game) {
+  return {
+    id: game.id,
+    slug: game.slug,
+    name: game.name,
+    image: game.image ?? null,
+    released: game.released ?? null,
+    metacritic: game.metacritic ?? null,
+    rating: game.rating ?? null,
+    playtime: game.playtime ?? 0,
+    genres: (game.genres ?? []).map((g) => ({ id: g.id, name: g.name, slug: g.slug })),
+    tags: (game.tags ?? []).map((t) => ({ name: t.name, slug: t.slug })),
+  };
+}
+
 /** Add a liked game. Newest first, and never stored twice. */
 export function addMatch(game) {
   const list = getMatches().filter((m) => m.id !== game.id);
-  const next = [{ ...game, likedAt: Date.now() }, ...list];
+  const next = [{ ...toMatchRecord(game), likedAt: Date.now() }, ...list];
   write(KEYS.matches, next);
   return next;
 }
