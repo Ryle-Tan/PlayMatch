@@ -79,28 +79,22 @@
   padding: var(--s-5) 0 var(--s-4);
 }
 
-.start__title {
+.start__logo {
   position: relative;
   z-index: 1;
-  font-family: var(--font-title);
-  font-size: clamp(38px, 12vw, 88px);
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--neon-gold);
-
-  /* Thick navy outline, drawn behind the fill so the letters stay full
-     weight. paint-order is honoured by current browsers; where it is
-     not, the outline simply sits centred and the title still reads. */
-  -webkit-text-stroke: 5px var(--bg);
-  paint-order: stroke fill;
-
-  /* Solid orange offset for the 3D block, plus a gold glow. */
-  text-shadow:
-    5px 5px 0 var(--neon-orange),
-    0 0 26px rgba(247, 179, 43, 0.5);
-
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* The same jaunty tilt the wordmark had before. */
   transform: rotate(-3deg);
+}
+
+.start__logo .logo--lockup {
+  width: min(100%, 420px);
+  height: auto;
+  /* Logos are allowed to glow; body copy is not. */
+  filter: drop-shadow(0 0 18px rgba(247, 179, 43, 0.4));
 }
 
 .start__tagline {
@@ -111,14 +105,6 @@
   text-transform: uppercase;
   color: var(--neon-teal);
   margin: 0;
-}
-
-/* ---- Controller ---- */
-
-.start__controller {
-  width: clamp(110px, 32vw, 168px);
-  height: auto;
-  filter: drop-shadow(0 0 10px rgba(46, 196, 182, 0.55));
 }
 
 /* ---- Copy and call to action ---- */

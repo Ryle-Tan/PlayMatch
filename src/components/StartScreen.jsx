@@ -4,7 +4,7 @@ import { getGenres } from "../lib/api.js";
 import { errorTitle } from "../lib/errorCopy.js";
 import Loader from "./Loader.jsx";
 import ErrorState from "./ErrorState.jsx";
-import ControllerIcon from "./ControllerIcon.jsx";
+import { LogoLockup } from "./Logo.jsx";
 import "./StartScreen.css";
 
 /**
@@ -49,12 +49,12 @@ export default function StartScreen() {
         <div className="start__panel">
           <div className="start__hero">
             <div className="starburst" aria-hidden="true" />
-            <h1 className="start__title">PlayMatch</h1>
+            <h1 className="start__logo">
+              <LogoLockup title="PlayMatch" />
+            </h1>
           </div>
 
           <p className="start__tagline">Swipe · Match · Play</p>
-
-          <ControllerIcon className="start__controller" />
 
           <p className="start__pitch">
             Swipe through thousands of video games, keep the ones you like, and

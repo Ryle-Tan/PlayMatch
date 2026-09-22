@@ -7,32 +7,22 @@
   margin-bottom: var(--s-5);
 }
 
-/* A small lit sign: gold fill, navy outline, orange offset — the same
-   recipe as the hero title, scaled down. */
+/* The logo lockup, scaled down for the header bar. */
 .wordmark {
-  font-family: var(--font-title);
-  font-size: clamp(22px, 5.5vw, 30px);
-  line-height: 1;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  display: inline-flex;
   text-decoration: none;
-  color: var(--neon-gold);
-
-  -webkit-text-stroke: 3px var(--bg);
-  paint-order: stroke fill;
-  text-shadow:
-    3px 3px 0 var(--neon-orange),
-    0 0 16px rgba(247, 179, 43, 0.45);
-
   transform: rotate(-2deg);
-  display: inline-block;
-  transition: text-shadow 0.18s ease;
+  transition: filter 0.18s ease;
 }
 
-.wordmark:hover {
-  text-shadow:
-    3px 3px 0 var(--neon-orange),
-    0 0 24px rgba(247, 179, 43, 0.7);
+.wordmark .logo--lockup {
+  width: clamp(132px, 34vw, 176px);
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(247, 179, 43, 0.3));
+}
+
+.wordmark:hover .logo--lockup {
+  filter: drop-shadow(0 0 16px rgba(247, 179, 43, 0.55));
 }
 
 .site-header__nav {
