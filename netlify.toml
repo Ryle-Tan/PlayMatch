@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------
+# PlayMatch — Netlify configuration
+# ---------------------------------------------------------------
+
+[build]
+  command   = "npm run build"
+  publish   = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# `netlify dev` runs Vite for us AND serves the functions on the
+# same origin, so the frontend can call /.netlify/functions/* locally
+# exactly like it will in production.
+[dev]
+  command    = "npm run dev"
+  targetPort = 5173
+  port       = 8888
+  framework  = "#custom"
+  autoLaunch = false
+
+# Single Page App fallback: React Router owns the URLs, so every
+# unknown path must serve index.html instead of a 404.
+# (Netlify matches /.netlify/functions/* before this rule.)
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

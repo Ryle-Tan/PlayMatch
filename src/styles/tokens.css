@@ -1,0 +1,43 @@
+/* PlayMatch design tokens — the arcade cabinet's colour scheme. */
+
+:root {
+  /* Surfaces: near-black with a faint purple cast, like a dark CRT. */
+  --bg-deep: #07050e;
+  --bg: #0d0a18;
+  --bg-raised: #15102a;
+  --bg-sunken: #0a0714;
+
+  /* Neon accents */
+  --neon-magenta: #ff2e88;
+  --neon-cyan: #22e7ff;
+  --neon-lime: #9dff3c;
+  --neon-amber: #ffc93c;
+  --neon-violet: #a465ff;
+
+  /* Text */
+  --text: #f2ecff;
+  --text-dim: #a89ec4;
+  --text-faint: #6c6390;
+
+  /* Lines */
+  --line: #2a2148;
+  --line-bright: #443474;
+
+  /* Type */
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-body: "Chakra Petch", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+
+  /* Glows */
+  --glow-magenta: 0 0 12px rgba(255, 46, 136, 0.55);
+  --glow-cyan: 0 0 12px rgba(34, 231, 255, 0.5);
+  --glow-lime: 0 0 12px rgba(157, 255, 60, 0.5);
+}

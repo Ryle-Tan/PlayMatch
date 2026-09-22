@@ -1,0 +1,61 @@
+/* Reusable arcade UI pieces: pixel buttons and pixel-bordered panels. */
+
+.pixel-btn {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--bg-deep);
+  background: var(--neon-cyan);
+  border: none;
+  padding: var(--s-3) var(--s-5);
+  cursor: pointer;
+  position: relative;
+  /* A stepped, pixel-looking corner instead of a smooth radius. */
+  clip-path: polygon(
+    0 6px, 6px 6px, 6px 0,
+    calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px)
+  );
+  transition: transform 0.08s steps(2), filter 0.15s;
+}
+
+.pixel-btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+.pixel-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.pixel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pixel-btn--magenta { background: var(--neon-magenta); color: #1a0010; }
+.pixel-btn--lime    { background: var(--neon-lime);    color: #0a1400; }
+.pixel-btn--amber   { background: var(--neon-amber);   color: #1a1200; }
+
+.pixel-btn--ghost {
+  background: transparent;
+  color: var(--neon-cyan);
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+/* A panel with a chunky two-tone pixel border. */
+.pixel-panel {
+  background: var(--bg-raised);
+  border: 2px solid var(--line-bright);
+  box-shadow:
+    0 0 0 2px var(--bg-deep),
+    0 0 0 4px var(--line),
+    0 8px 30px rgba(0, 0, 0, 0.5);
+  padding: var(--s-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-btn { transition: none; }
+  .pixel-btn:hover:not(:disabled) { transform: none; }
+}
