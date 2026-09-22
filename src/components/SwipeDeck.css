@@ -1,0 +1,124 @@
+.deck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  align-items: center;
+  width: 100%;
+}
+
+/* ---- Top bar: what is being dealt, and where to go next ---- */
+
+.deck__bar {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.deck__filters {
+  min-width: 0;
+}
+
+.deck__filters-label {
+  margin: 0;
+  color: var(--cream-faint);
+}
+
+.deck__filters-value {
+  margin: 0;
+  font-size: 14px;
+  color: var(--cream);
+  /* Long filter lists should not push the buttons off the row. */
+  overflow-wrap: anywhere;
+}
+
+.deck__bar-actions {
+  display: flex;
+  gap: var(--s-2);
+  flex-shrink: 0;
+}
+
+/* ---- The card stack ---- */
+
+.deck__stage {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  /* Tall enough for art plus the text block, short enough that the
+     controls stay visible on a phone without scrolling. */
+  height: min(66dvh, 560px);
+  min-height: 380px;
+  display: grid;
+  place-items: center;
+}
+
+/* ---- Status line ---- */
+
+.deck__status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  text-align: center;
+}
+
+.deck__progress {
+  margin: 0;
+  font-size: 14px;
+  color: var(--cream-dim);
+}
+
+.deck__refill {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cream-faint);
+}
+
+.deck__unlock {
+  animation: unlock-throb 2.2s ease-in-out infinite;
+}
+
+@keyframes unlock-throb {
+  0%, 100% { box-shadow: var(--glow-gold); }
+  50%      { box-shadow: var(--glow-gold-strong); }
+}
+
+/* ---- Hint ---- */
+
+.deck__hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--cream-faint);
+  text-align: center;
+}
+
+.deck__hint kbd {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: var(--cream-dim);
+}
+
+/* Keyboard hints mean nothing on a touch device. */
+@media (hover: none) and (pointer: coarse) {
+  .deck__hint kbd { display: none; }
+}
+
+.deck__empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck__unlock { animation: none; }
+}

@@ -1,0 +1,118 @@
+.game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--panel);
+  /* Rounded navy screen with a teal neon edge. */
+  border: 2px solid var(--neon-teal);
+  box-shadow: var(--glow-teal);
+}
+
+/* ---- Cover art ---- */
+
+.game-card__art {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.game-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Stops the browser's native image drag fighting the swipe gesture. */
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Fades the art into the card body so text below never sits on busy pixels. */
+.game-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 28, 40, 0) 45%,
+    rgba(16, 41, 58, 0.85) 85%,
+    var(--panel) 100%
+  );
+}
+
+/* ---- Metacritic badge ---- */
+
+.metacritic {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  min-width: 42px;
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  border: 2px solid currentColor;
+  background: rgba(10, 28, 40, 0.82);
+  font-size: 15px;
+  text-align: center;
+}
+
+.metacritic--good  { color: var(--neon-teal);   box-shadow: var(--glow-teal); }
+.metacritic--mixed { color: var(--neon-gold);   box-shadow: var(--glow-gold); }
+.metacritic--poor  { color: var(--neon-orange); box-shadow: var(--glow-orange); }
+
+/* ---- Body ---- */
+
+.game-card__body {
+  position: relative;
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  background: var(--panel);
+}
+
+.game-card__title {
+  font-size: clamp(20px, 5vw, 27px);
+  line-height: 1.12;
+  color: var(--cream);
+  /* Card titles stay plain: they can run to two lines. */
+}
+
+.game-card__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-size: 14px;
+  color: var(--cream-dim);
+}
+
+.game-card__dot { color: var(--cream-faint); }
+.game-card__muted { color: var(--cream-faint); }
+
+.tag-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neon-teal);
+  border: 1px solid rgba(46, 196, 182, 0.45);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+}
+
+.game-card__platforms {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cream-faint);
+}

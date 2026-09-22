@@ -1,0 +1,135 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  padding-bottom: var(--s-5);
+}
+
+.filters__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.filters__heading {
+  font-size: clamp(26px, 6vw, 40px);
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  text-shadow: var(--glow-teal);
+}
+
+/* Body copy: plain cream, no glow. */
+.filters__sub {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--cream-dim);
+}
+
+/* ---- Groups ---- */
+
+.filter-group {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filter-group__legend {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  margin-bottom: var(--s-3);
+  padding: 0;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+/* ---- Chips ---- */
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--cream);
+
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 9px var(--s-4);
+  cursor: pointer;
+
+  transition: border-color 0.16s ease, box-shadow 0.16s ease,
+    background-color 0.16s ease, color 0.16s ease;
+}
+
+.chip:hover {
+  border-color: var(--cream-faint);
+  background: var(--panel-raised);
+}
+
+.chip__icon {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.chip__sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cream-faint);
+}
+
+/*
+ * Selected chips are a button-like control, so the glow is allowed.
+ * Selection is shown by colour AND a filled background, never colour
+ * alone, so it stays clear without relying on hue perception.
+ */
+.chip.is-selected {
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.chip.is-selected .chip__sub {
+  color: rgba(10, 28, 40, 0.7);
+}
+
+.chip--teal.is-selected {
+  background: var(--neon-teal);
+  border-color: var(--neon-teal);
+  box-shadow: var(--glow-teal);
+}
+
+.chip--gold.is-selected {
+  background: var(--neon-gold);
+  border-color: var(--neon-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.chip--orange.is-selected {
+  background: var(--neon-orange);
+  border-color: var(--neon-orange);
+  box-shadow: var(--glow-orange);
+}
+
+/* ---- Actions ---- */
+
+.filters__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip { transition: none; }
+}

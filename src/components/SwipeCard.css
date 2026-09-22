@@ -1,0 +1,45 @@
+.swipe-card {
+  position: absolute;
+  inset: 0;
+  /* `top` is set inline per depth, so height comes from the deck. */
+  bottom: auto;
+  height: 100%;
+  border-radius: var(--r-card);
+
+  /* Only the top card takes pointer input. */
+  pointer-events: none;
+  touch-action: pan-y;
+}
+
+.swipe-card.is-top {
+  pointer-events: auto;
+  cursor: grab;
+  /* The browser must not claim the gesture for scrolling. */
+  touch-action: none;
+}
+
+/* ---- Stamps ---- */
+
+.swipe-card__stamp {
+  position: absolute;
+  top: var(--s-5);
+  pointer-events: none;
+  /* framer-motion drives opacity, so start hidden. */
+  opacity: 0;
+}
+
+.swipe-card__stamp--like {
+  left: var(--s-4);
+  transform: rotate(-14deg);
+}
+
+.swipe-card__stamp--nope {
+  right: var(--s-4);
+  transform: rotate(14deg);
+}
+
+.swipe-card__stamp--more {
+  left: 50%;
+  top: 38%;
+  transform: translateX(-50%);
+}

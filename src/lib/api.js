@@ -29,27 +29,42 @@ function buildUrl(endpoint, params) {
 }
 
 /**
- * Fetch from one of our functions, using the localStorage cache when possible.
- * @param {string} endpoint  function name, e.g. "games"
- * @param {object} params    query string values
- * @param {number} ttl       how long to cache the result
+ * Requests that are in the air right now, keyed by URL.
+ *
+ * Without this, two components asking for the same thing at the same
+ * moment each spend a RAWG request, because neither has finished in
+ * time to fill the cache for the other. React's StrictMode does
+ * exactly that in development.
  */
-async function request(endpoint, params = {}, ttl = TTL.HOUR, { signal } = {}) {
-  const url = buildUrl(endpoint, params);
-  const cacheKey = url.pathname + url.search;
+const inFlight = new Map();
 
-  const cached = readCache(cacheKey);
-  if (cached) return cached;
+/**
+ * Let a caller walk away from a shared request without killing it.
+ *
+ * The underlying fetch is deliberately NOT given the caller's abort
+ * signal: if it were, one component unmounting would cancel the
+ * request that other components are still waiting on. Instead the
+ * fetch always runs to completion and fills the cache, while each
+ * caller races it against its own signal.
+ */
+function abortable(promise, signal) {
+  if (!signal) return promise;
+  if (signal.aborted) return Promise.reject(new DOMException("Aborted", "AbortError"));
 
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(new DOMException("Aborted", "AbortError"));
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(resolve, reject).finally(() => signal.removeEventListener("abort", onAbort));
+  });
+}
+
+/** The actual network call, plus caching of the result. */
+async function fetchAndCache(url, cacheKey, ttl) {
   let response;
   try {
-    response = await fetch(url, { signal });
-  } catch (error) {
-    if (error.name === "AbortError") throw error;
-    throw new ApiError(
-      "No signal. Check your internet connection and try again.",
-      "OFFLINE"
-    );
+    response = await fetch(url);
+  } catch {
+    throw new ApiError("No signal. Check your internet connection and try again.", "OFFLINE");
   }
 
   let body = null;
@@ -69,6 +84,29 @@ async function request(endpoint, params = {}, ttl = TTL.HOUR, { signal } = {}) {
 
   writeCache(cacheKey, body, ttl);
   return body;
+}
+
+/**
+ * Fetch from one of our functions, using the localStorage cache when possible.
+ * @param {string} endpoint  function name, e.g. "games"
+ * @param {object} params    query string values
+ * @param {number} ttl       how long to cache the result
+ */
+function request(endpoint, params = {}, ttl = TTL.HOUR, { signal } = {}) {
+  const url = buildUrl(endpoint, params);
+  const cacheKey = url.pathname + url.search;
+
+  const cached = readCache(cacheKey);
+  if (cached) return Promise.resolve(cached);
+
+  // Join a request already on its way rather than starting a second one.
+  let pending = inFlight.get(cacheKey);
+  if (!pending) {
+    pending = fetchAndCache(url, cacheKey, ttl).finally(() => inFlight.delete(cacheKey));
+    inFlight.set(cacheKey, pending);
+  }
+
+  return abortable(pending, signal);
 }
 
 // ---- The endpoints the app actually uses -------------------------------
