@@ -1,0 +1,39 @@
+/*
+ * The lockup scales from one value: its own font-size.
+ * The mark is sized in `em`, so icon and wordmark always move together.
+ */
+
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.24em;
+  /* Tilted as a single unit, never as two separate pieces. */
+  transform: rotate(-3deg);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-lockup__mark {
+  /* Slightly taller than the cap height of the word, which reads as
+     balanced because the mark is an outline rather than solid type. */
+  height: 1.08em;
+  width: auto;
+  flex: none;
+}
+
+.logo-lockup__word {
+  font-family: var(--font-title);
+  font-size: 1em;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+
+  color: var(--neon-gold);
+  /* Solid orange block shadow, no outline. Set in `em` so it stays
+     proportional when the lockup shrinks on small screens. */
+  text-shadow: 0.069em 0.069em 0 var(--neon-orange);
+
+  /* Lilita One sits high in its box; this drops the word a touch so
+     it looks optically centred against the mark (~4px at 58px). */
+  transform: translateY(0.069em);
+}

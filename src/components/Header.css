@@ -7,22 +7,20 @@
   margin-bottom: var(--s-5);
 }
 
-/* The logo lockup, scaled down for the header bar. */
+/* The same lockup, scaled down for the header bar. */
 .wordmark {
   display: inline-flex;
   text-decoration: none;
-  transform: rotate(-2deg);
   transition: filter 0.18s ease;
 }
 
-.wordmark .logo--lockup {
-  width: clamp(132px, 34vw, 176px);
-  height: auto;
-  filter: drop-shadow(0 0 10px rgba(247, 179, 43, 0.3));
+.wordmark .logo-lockup {
+  font-size: clamp(19px, 4.8vw, 26px);
+  filter: drop-shadow(0 0 10px rgba(247, 179, 43, 0.25));
 }
 
-.wordmark:hover .logo--lockup {
-  filter: drop-shadow(0 0 16px rgba(247, 179, 43, 0.55));
+.wordmark:hover .logo-lockup {
+  filter: drop-shadow(0 0 16px rgba(247, 179, 43, 0.5));
 }
 
 .site-header__nav {

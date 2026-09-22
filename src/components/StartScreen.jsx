@@ -47,12 +47,9 @@ export default function StartScreen() {
         <span className="start__disc start__disc--teal-sm" aria-hidden="true" />
 
         <div className="start__panel">
-          <div className="start__hero">
-            <div className="starburst" aria-hidden="true" />
-            <h1 className="start__logo">
-              <LogoLockup title="PlayMatch" />
-            </h1>
-          </div>
+          <h1 className="start__logo">
+            <LogoLockup title="PlayMatch" />
+          </h1>
 
           <p className="start__tagline">Swipe · Match · Play</p>
 
@@ -79,7 +76,7 @@ export default function StartScreen() {
                 </Link>
                 <p className="start__ready">
                   <span className="start__led" aria-hidden="true" />
-                  System ready — <span className="stat-figure">{genreCount}</span> genres loaded
+                  System ready · <span className="stat-figure">{genreCount}</span> genres
                 </p>
               </>
             )}

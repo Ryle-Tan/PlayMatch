@@ -3,17 +3,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--s-5) 0;
+  padding: var(--s-6) 0;
 }
 
-/* Holds the panel plus the discs that sit behind it. */
+/* Holds the panel plus the colour discs sitting behind it. */
 .start__stage {
   position: relative;
   width: 100%;
   max-width: 600px;
 }
 
-/* ---- Solid circles peeking out from behind the panel ---- */
+/* ---- Solid colour discs behind the frosted panel ----
+ * These are deliberately full-strength colour: the panel's blur is
+ * what softens them, so they read as shapes seen through plastic
+ * rather than shapes cut off by an edge.
+ */
 
 .start__disc {
   position: absolute;
@@ -22,107 +26,124 @@
 }
 
 .start__disc--teal {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   background: var(--neon-teal);
-  top: -54px;
-  left: -46px;
+  top: -84px;
+  left: -78px;
 }
 
 .start__disc--gold {
-  width: 118px;
-  height: 118px;
+  width: 200px;
+  height: 200px;
   background: var(--neon-gold);
-  bottom: -40px;
-  right: -34px;
+  bottom: -72px;
+  right: -62px;
 }
 
 .start__disc--orange {
-  width: 92px;
-  height: 92px;
+  width: 152px;
+  height: 152px;
   background: var(--neon-orange);
   top: 38%;
-  right: -44px;
+  right: -74px;
 }
 
 .start__disc--teal-sm {
-  width: 70px;
-  height: 70px;
+  width: 124px;
+  height: 124px;
   background: var(--neon-teal);
-  bottom: 16%;
-  left: -32px;
+  bottom: 14%;
+  left: -58px;
 }
 
-/* ---- The main panel ---- */
+/* ---- The frosted panel ---- */
 
 .start__panel {
   position: relative;
   z-index: 1;
-  background: var(--panel);
-  border-radius: var(--r-card);
-  padding: var(--s-6) var(--s-5) var(--s-5);
+  overflow: hidden;
+
+  /* Clear-plastic shell: the discs behind show through, blurred. */
+  background: rgba(16, 41, 58, 0.45);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(245, 230, 195, 0.3);
+  border-radius: 24px;
+
+  padding: clamp(28px, 6.5vw, 52px) clamp(20px, 5vw, 44px);
   text-align: center;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--s-4);
-  overflow: hidden; /* keeps the starburst inside the rounded corners */
+  gap: var(--s-5);
 }
 
-/* ---- Hero title ---- */
-
-.start__hero {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  padding: var(--s-5) 0 var(--s-4);
+/* Diagonal light streak, like the sheen on a clear Game Boy shell. */
+.start__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    114deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 64%
+  );
 }
 
-.start__logo {
+/* Keep content above the sheen. */
+.start__panel > * {
   position: relative;
   z-index: 1;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  /* The same jaunty tilt the wordmark had before. */
-  transform: rotate(-3deg);
 }
 
-.start__logo .logo--lockup {
-  width: min(100%, 420px);
-  height: auto;
-  /* Logos are allowed to glow; body copy is not. */
-  filter: drop-shadow(0 0 18px rgba(247, 179, 43, 0.4));
+/* ---- Logo ---- */
+
+.start__logo {
+  margin: 0;
+  /* One value scales the whole lockup, icon and wordmark together.
+     ~58px on desktop, shrinking to fit the panel on a small phone. */
+  font-size: clamp(27px, 8.4vw, 58px);
+  /* The lockup carries its own -3deg tilt. */
 }
+
+/* ---- Tagline ---- */
 
 .start__tagline {
+  margin: 0;
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: clamp(11px, 3vw, 14px);
-  letter-spacing: 0.3em;
+  font-size: 14px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--neon-teal);
-  margin: 0;
+  text-shadow: 0 0 10px rgba(46, 196, 182, 0.55);
 }
 
-/* ---- Copy and call to action ---- */
+/* ---- Body copy: plain cream, no glow ---- */
 
 .start__pitch {
-  max-width: 42ch;
-  color: var(--cream-dim);
   margin: 0;
+  max-width: 40ch;
+  font-size: 16px;
+  color: var(--cream-dim);
 }
+
+/* ---- Call to action ---- */
 
 .start__cta {
   width: 100%;
-  margin-top: var(--s-2);
+  margin-top: var(--s-3);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--s-4);
-  min-height: 150px;
+  min-height: 124px;
   justify-content: center;
 }
 
@@ -130,17 +151,18 @@
   animation: coin-throb 2.2s ease-in-out infinite;
 }
 
-/* The glow breathes; the button itself does not move. */
 @keyframes coin-throb {
   0%, 100% { box-shadow: var(--glow-gold); }
   50%      { box-shadow: var(--glow-gold-strong); }
 }
 
+/* Quiet status line. */
 .start__ready {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--cream-dim);
   margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: rgba(245, 230, 195, 0.55);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -149,21 +171,26 @@
 }
 
 .start__led {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--neon-teal);
   box-shadow: var(--glow-teal);
+}
+
+/* The error panel replaces the CTA, so let it fill the space. */
+.start__cta .msg-state {
+  padding: var(--s-4);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .start__coin { animation: none; }
 }
 
-/* Pull the discs in on small screens so they stay on the page. */
+/* Pull the discs in on small screens so they stay near the panel. */
 @media (max-width: 560px) {
-  .start__disc--teal    { width: 104px; height: 104px; top: -34px; left: -26px; }
-  .start__disc--gold    { width: 84px;  height: 84px;  bottom: -26px; right: -18px; }
-  .start__disc--orange  { width: 62px;  height: 62px;  right: -22px; }
-  .start__disc--teal-sm { width: 48px;  height: 48px;  left: -18px; }
+  .start__disc--teal    { width: 170px; height: 170px; top: -58px; left: -52px; }
+  .start__disc--gold    { width: 140px; height: 140px; bottom: -48px; right: -42px; }
+  .start__disc--orange  { width: 104px; height: 104px; right: -48px; }
+  .start__disc--teal-sm { width: 86px;  height: 86px;  left: -38px; }
 }
