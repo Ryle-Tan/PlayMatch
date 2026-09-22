@@ -100,35 +100,39 @@
   box-shadow: var(--glow-orange), inset 0 0 18px rgba(232, 111, 44, 0.08);
 }
 
-/* ---------- Swipe stamps (used by the deck in a later step) ---------- */
+/* ---------- Swipe stamps (shown while dragging a card) ----------
+ * Circular badges carrying the same icons as the control buttons,
+ * so the gesture and the button read as the same action.
+ */
 
 .stamp {
-  font-family: var(--font-title);
-  font-size: clamp(26px, 7vw, 40px);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: var(--s-2) var(--s-4);
+  width: clamp(64px, 17vw, 84px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
   border: 4px solid currentColor;
-  border-radius: var(--r-sm);
-  background: rgba(10, 28, 40, 0.55);
+  border-radius: 50%;
+  background: rgba(10, 28, 40, 0.6);
+}
+
+.stamp .icon {
+  width: 52%;
+  height: 52%;
 }
 
 .stamp--like {
   color: var(--neon-teal);
   box-shadow: var(--glow-teal-strong);
-  text-shadow: var(--glow-teal);
 }
 
 .stamp--nope {
   color: var(--neon-orange);
   box-shadow: var(--glow-orange-strong);
-  text-shadow: var(--glow-orange);
 }
 
 .stamp--more {
   color: var(--neon-gold);
   box-shadow: var(--glow-gold-strong);
-  text-shadow: var(--glow-gold);
 }
 
 /* ---------- Game library grid (match list, a later step) ---------- */

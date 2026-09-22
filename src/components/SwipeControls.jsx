@@ -1,10 +1,12 @@
+import { IconCross, IconHeart, IconInfo } from "./icons.jsx";
 import "./SwipeControls.css";
 
 /**
  * The button row under the deck.
  *
- * These call exactly the same handler as a drag gesture, so desktop
- * users, keyboard users and touch users all take the same path.
+ * These call exactly the same handler as a drag gesture, and carry
+ * exactly the same icons as the drag stamps, so desktop users,
+ * keyboard users and touch users all read the same language.
  */
 export default function SwipeControls({ onDecide, disabled }) {
   return (
@@ -15,9 +17,9 @@ export default function SwipeControls({ onDecide, disabled }) {
         onClick={() => onDecide("nope")}
         disabled={disabled}
         aria-label="Pass on this game (left arrow key)"
-        title="Pass — ←"
+        title="Pass — drag left or press ←"
       >
-        <span aria-hidden="true">✕</span>
+        <IconCross />
       </button>
 
       <button
@@ -26,9 +28,9 @@ export default function SwipeControls({ onDecide, disabled }) {
         onClick={() => onDecide("more")}
         disabled={disabled}
         aria-label="See more about this game (up arrow key)"
-        title="Tell me more — ↑"
+        title="Info — drag up or press ↑"
       >
-        <span aria-hidden="true">↑</span>
+        <IconInfo />
       </button>
 
       <button
@@ -37,9 +39,9 @@ export default function SwipeControls({ onDecide, disabled }) {
         onClick={() => onDecide("like")}
         disabled={disabled}
         aria-label="Like this game (right arrow key)"
-        title="Like — →"
+        title="Like — drag right or press →"
       >
-        <span aria-hidden="true">♥</span>
+        <IconHeart />
       </button>
     </div>
   );

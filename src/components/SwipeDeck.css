@@ -122,3 +122,93 @@
 @media (prefers-reduced-motion: reduce) {
   .deck__unlock { animation: none; }
 }
+
+/* ---- First-run drag hints ----
+ * Shown to anyone who has never swiped, on top of the card but
+ * transparent to pointer events so they never block a gesture.
+ * They fade out the moment the player drags, taps or uses a key.
+ */
+
+.drag-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--s-2);
+
+  transition: opacity 0.6s ease;
+}
+
+.drag-hint.is-fading {
+  opacity: 0;
+}
+
+.drag-hint__side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  animation: hint-nudge 1.8s ease-in-out infinite;
+}
+
+.drag-hint__side--left {
+  color: var(--neon-orange);
+  animation-name: hint-nudge-left;
+}
+
+.drag-hint__side--right {
+  color: var(--neon-teal);
+  animation-name: hint-nudge-right;
+}
+
+.drag-hint__badge {
+  width: clamp(46px, 13vw, 58px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  /* Sits over cover art, so it needs its own backing to stay legible. */
+  background: rgba(10, 28, 40, 0.8);
+}
+
+.drag-hint__side--left .drag-hint__badge  { box-shadow: var(--glow-orange); }
+.drag-hint__side--right .drag-hint__badge { box-shadow: var(--glow-teal); }
+
+.drag-hint__badge .icon {
+  width: 52%;
+  height: 52%;
+}
+
+.drag-hint__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(10, 28, 40, 0.8);
+  border-radius: var(--r-pill);
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+/* A small drift outwards, hinting at the direction to pull. */
+@keyframes hint-nudge-left {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-9px); }
+}
+
+@keyframes hint-nudge-right {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(9px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drag-hint__side { animation: none; }
+  .drag-hint { transition: none; }
+}

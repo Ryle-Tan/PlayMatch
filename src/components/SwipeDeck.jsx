@@ -9,6 +9,7 @@ import { getFilters, bumpSwipeCount, getSwipeCount } from "../lib/storage.js";
 import { errorTitle } from "../lib/errorCopy.js";
 
 import SwipeCard from "./SwipeCard.jsx";
+import { IconCross, IconHeart } from "./icons.jsx";
 import SwipeControls from "./SwipeControls.jsx";
 import Loader from "./Loader.jsx";
 import ErrorState from "./ErrorState.jsx";
@@ -36,11 +37,34 @@ export default function SwipeDeck() {
   const [swipeCount, setSwipeCount] = useState(() => getSwipeCount());
   const [lastAction, setLastAction] = useState(null);
 
+  /*
+   * Drag hints for first-time players only.
+   *   visible -> fading -> gone
+   * Anyone who has ever swiped starts at "gone", so the hints show
+   * once and never again.
+   */
+  const [hintState, setHintState] = useState(() =>
+    getSwipeCount() === 0 ? "visible" : "gone"
+  );
+
+  const dismissHint = useCallback(() => {
+    setHintState((state) => (state === "visible" ? "fading" : state));
+  }, []);
+
+  // Let the fade finish before taking the hints out of the DOM.
+  useEffect(() => {
+    if (hintState !== "fading") return;
+    const timer = setTimeout(() => setHintState("gone"), 700);
+    return () => clearTimeout(timer);
+  }, [hintState]);
+
   const top = queue[0] ?? null;
 
   const decide = useCallback(
     (action) => {
       if (!top) return;
+
+      dismissHint();
 
       // "More" opens the details view and deliberately leaves the card
       // in the deck, so you can still like or pass it afterwards.
@@ -55,7 +79,7 @@ export default function SwipeDeck() {
       swipe(top);
       setSwipeCount(bumpSwipeCount());
     },
-    [top, addMatch, swipe, navigate]
+    [top, addMatch, swipe, navigate, dismissHint]
   );
 
   // Arrow keys mirror the gestures, so the deck is fully usable
@@ -157,9 +181,32 @@ export default function SwipeDeck() {
               depth={index}
               isTop={index === 0}
               onDecide={decide}
+              onDragStart={index === 0 ? dismissHint : undefined}
             />
           ))}
         </AnimatePresence>
+
+        {/* Shown once, to anyone who has never swiped before. */}
+        {top && hintState !== "gone" && (
+          <div
+            className={`drag-hint ${hintState === "fading" ? "is-fading" : ""}`}
+            aria-hidden="true"
+          >
+            <span className="drag-hint__side drag-hint__side--left">
+              <span className="drag-hint__badge">
+                <IconCross />
+              </span>
+              <span className="drag-hint__label">← Pass</span>
+            </span>
+
+            <span className="drag-hint__side drag-hint__side--right">
+              <span className="drag-hint__badge">
+                <IconHeart />
+              </span>
+              <span className="drag-hint__label">Like →</span>
+            </span>
+          </div>
+        )}
 
         {/* The deck is briefly empty while the next page arrives. */}
         {queue.length === 0 && <Loader label="DEALING CARDS" />}

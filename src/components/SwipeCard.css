@@ -28,18 +28,11 @@
   opacity: 0;
 }
 
-.swipe-card__stamp--like {
-  left: var(--s-4);
-  transform: rotate(-14deg);
-}
-
-.swipe-card__stamp--nope {
-  right: var(--s-4);
-  transform: rotate(14deg);
-}
+.swipe-card__stamp--like { left: var(--s-4); }
+.swipe-card__stamp--nope { right: var(--s-4); }
 
 .swipe-card__stamp--more {
   left: 50%;
-  top: 38%;
+  top: 34%;
   transform: translateX(-50%);
 }

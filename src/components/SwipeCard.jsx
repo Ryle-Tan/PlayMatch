@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useTransform, useReducedMotion } from "framer-motion";
 import GameCard from "./GameCard.jsx";
+import { IconCross, IconHeart, IconInfo } from "./icons.jsx";
 import "./SwipeCard.css";
 
 /** How far (px) a drag must travel to count as a decision. */
@@ -35,7 +36,7 @@ const exitVariants = {
  * The top card is draggable; the cards behind it are inert and only
  * provide depth, so a gesture can never land on the wrong card.
  */
-export default function SwipeCard({ game, depth, isTop, onDecide }) {
+export default function SwipeCard({ game, depth, isTop, onDecide, onDragStart }) {
   const prefersReduced = useReducedMotion();
 
   const x = useMotionValue(0);
@@ -90,6 +91,7 @@ export default function SwipeCard({ game, depth, isTop, onDecide }) {
       dragSnapToOrigin
       dragElastic={0.55}
       dragMomentum={false}
+      onDragStart={onDragStart}
       onDragEnd={handleDragEnd}
       whileDrag={{ cursor: "grabbing" }}
     >
@@ -102,7 +104,7 @@ export default function SwipeCard({ game, depth, isTop, onDecide }) {
             style={{ opacity: likeOpacity }}
             aria-hidden="true"
           >
-            Like
+            <IconHeart />
           </motion.span>
 
           <motion.span
@@ -110,7 +112,7 @@ export default function SwipeCard({ game, depth, isTop, onDecide }) {
             style={{ opacity: nopeOpacity }}
             aria-hidden="true"
           >
-            Nope
+            <IconCross />
           </motion.span>
 
           <motion.span
@@ -118,7 +120,7 @@ export default function SwipeCard({ game, depth, isTop, onDecide }) {
             style={{ opacity: moreOpacity }}
             aria-hidden="true"
           >
-            More
+            <IconInfo />
           </motion.span>
         </>
       )}
