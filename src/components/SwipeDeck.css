@@ -123,10 +123,10 @@
   .deck__unlock { animation: none; }
 }
 
-/* ---- First-run drag hints ----
- * Shown to anyone who has never swiped, on top of the card but
- * transparent to pointer events so they never block a gesture.
- * They fade out the moment the player drags, taps or uses a key.
+/* ---- Drag coaching ----
+ * Shown until the player has actually dragged a card. They sit on top
+ * of the card but are transparent to pointer events, so they can never
+ * block the gesture they are advertising.
  */
 
 .drag-hint {
@@ -143,6 +143,13 @@
   transition: opacity 0.6s ease;
 }
 
+/* Out of the way while a drag is happening, so it never competes
+   with the LIKE / NOPE stamps. */
+.drag-hint.is-dragging {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
 .drag-hint.is-fading {
   opacity: 0;
 }
@@ -152,32 +159,25 @@
   flex-direction: column;
   align-items: center;
   gap: var(--s-2);
-  animation: hint-nudge 1.8s ease-in-out infinite;
+  animation: hint-nudge-left 1.5s ease-in-out infinite;
 }
 
-.drag-hint__side--left {
-  color: var(--neon-orange);
-  animation-name: hint-nudge-left;
-}
-
-.drag-hint__side--right {
-  color: var(--neon-teal);
-  animation-name: hint-nudge-right;
-}
+.drag-hint__side--left  { color: var(--neon-orange); animation-name: hint-nudge-left; }
+.drag-hint__side--right { color: var(--neon-teal);   animation-name: hint-nudge-right; }
 
 .drag-hint__badge {
-  width: clamp(46px, 13vw, 58px);
+  width: clamp(54px, 15vw, 68px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border: 2px solid currentColor;
+  border: 3px solid currentColor;
   border-radius: 50%;
   /* Sits over cover art, so it needs its own backing to stay legible. */
-  background: rgba(10, 28, 40, 0.8);
+  background: rgba(10, 28, 40, 0.88);
 }
 
-.drag-hint__side--left .drag-hint__badge  { box-shadow: var(--glow-orange); }
-.drag-hint__side--right .drag-hint__badge { box-shadow: var(--glow-teal); }
+.drag-hint__side--left .drag-hint__badge  { box-shadow: var(--glow-orange-strong); }
+.drag-hint__side--right .drag-hint__badge { box-shadow: var(--glow-teal-strong); }
 
 .drag-hint__badge .icon {
   width: 52%;
@@ -187,28 +187,55 @@
 .drag-hint__label {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--cream);
-  background: rgba(10, 28, 40, 0.8);
+  background: rgba(10, 28, 40, 0.88);
   border-radius: var(--r-pill);
-  padding: 3px 9px;
+  padding: 4px 10px;
   white-space: nowrap;
 }
 
-/* A small drift outwards, hinting at the direction to pull. */
+/* A centred caption so the instruction is unmissable the first time. */
+.drag-hint__nudge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(10, 28, 40, 0.88);
+  border: 1px solid rgba(245, 230, 195, 0.28);
+  border-radius: var(--r-pill);
+  padding: 7px 14px;
+  white-space: nowrap;
+  animation: hint-breathe 2.4s ease-in-out infinite;
+}
+
+/* A drift outwards, hinting at the direction to pull. */
 @keyframes hint-nudge-left {
   0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(-9px); }
+  50%      { transform: translateX(-14px); }
 }
 
 @keyframes hint-nudge-right {
   0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(9px); }
+  50%      { transform: translateX(14px); }
+}
+
+@keyframes hint-breathe {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1; }
+}
+
+/* On the narrowest screens the centre caption would crowd the badges. */
+@media (max-width: 380px) {
+  .drag-hint__nudge { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drag-hint__side { animation: none; }
+  .drag-hint__side,
+  .drag-hint__nudge { animation: none; }
   .drag-hint { transition: none; }
 }

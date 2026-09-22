@@ -16,6 +16,7 @@ const KEYS = {
   seen: "playmatch:seen",
   filters: "playmatch:filters",
   swipes: "playmatch:swipes",
+  dragged: "playmatch:hasDragged",
 };
 
 // The seen list grows with every swipe, so cap it. 600 ids is far more
@@ -141,4 +142,22 @@ export function bumpSwipeCount() {
 
 export function resetSwipeCount() {
   write(KEYS.swipes, 0);
+}
+
+// ---- Drag coaching -----------------------------------------------------
+
+/*
+ * Tracked separately from the swipe count on purpose.
+ *
+ * The drag hints exist to teach the gesture, so they must keep showing
+ * until someone has actually dragged a card. Tapping the buttons is
+ * exactly the habit the hints are there to break, so it does not count.
+ */
+
+export function hasDragged() {
+  return read(KEYS.dragged, false) === true;
+}
+
+export function markDragged() {
+  write(KEYS.dragged, true);
 }

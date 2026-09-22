@@ -36,7 +36,7 @@ const exitVariants = {
  * The top card is draggable; the cards behind it are inert and only
  * provide depth, so a gesture can never land on the wrong card.
  */
-export default function SwipeCard({ game, depth, isTop, onDecide, onDragStart }) {
+export default function SwipeCard({ game, depth, isTop, onDecide, onDragStart, onDragEnd }) {
   const prefersReduced = useReducedMotion();
 
   const x = useMotionValue(0);
@@ -51,23 +51,24 @@ export default function SwipeCard({ game, depth, isTop, onDecide, onDragStart })
   const moreOpacity = useTransform(y, [-40, -130], [0, 1]);
 
   function handleDragEnd(_event, info) {
+    onDragEnd?.();
     const { offset, velocity } = info;
 
     // An upward drag only counts when it clearly beats the sideways one,
     // otherwise a sloppy diagonal would open details by accident.
     const mostlyVertical = Math.abs(offset.y) > Math.abs(offset.x) * 1.3;
     if (mostlyVertical && (offset.y < -COMMIT_DISTANCE || velocity.y < -COMMIT_VELOCITY)) {
-      onDecide("more");
+      onDecide("more", "drag");
       return;
     }
 
     if (offset.x > COMMIT_DISTANCE || velocity.x > COMMIT_VELOCITY) {
-      onDecide("like");
+      onDecide("like", "drag");
       return;
     }
 
     if (offset.x < -COMMIT_DISTANCE || velocity.x < -COMMIT_VELOCITY) {
-      onDecide("nope");
+      onDecide("nope", "drag");
     }
     // Anything else falls short, and dragSnapToOrigin returns the card.
   }

@@ -5,7 +5,13 @@ import { AnimatePresence } from "framer-motion";
 import { useDeck } from "../hooks/useDeck.js";
 import { useMatches } from "../hooks/useMatches.js";
 import { buildQuery, describeFilters } from "../lib/filters.js";
-import { getFilters, bumpSwipeCount, getSwipeCount } from "../lib/storage.js";
+import {
+  getFilters,
+  bumpSwipeCount,
+  getSwipeCount,
+  hasDragged,
+  markDragged,
+} from "../lib/storage.js";
 import { errorTitle } from "../lib/errorCopy.js";
 
 import SwipeCard from "./SwipeCard.jsx";
@@ -38,16 +44,17 @@ export default function SwipeDeck() {
   const [lastAction, setLastAction] = useState(null);
 
   /*
-   * Drag hints for first-time players only.
-   *   visible -> fading -> gone
-   * Anyone who has ever swiped starts at "gone", so the hints show
-   * once and never again.
+   * Drag coaching.
+   *
+   * The hints stay up until the player has actually dragged a card —
+   * pressing the buttons does not dismiss them, because tapping
+   * buttons is the habit the hints are meant to break.
    */
-  const [hintState, setHintState] = useState(() =>
-    getSwipeCount() === 0 ? "visible" : "gone"
-  );
+  const [hintState, setHintState] = useState(() => (hasDragged() ? "gone" : "visible"));
+  const [isDragging, setIsDragging] = useState(false);
 
-  const dismissHint = useCallback(() => {
+  const retireHint = useCallback(() => {
+    markDragged();
     setHintState((state) => (state === "visible" ? "fading" : state));
   }, []);
 
@@ -61,10 +68,11 @@ export default function SwipeDeck() {
   const top = queue[0] ?? null;
 
   const decide = useCallback(
-    (action) => {
+    (action, source = "button") => {
       if (!top) return;
 
-      dismissHint();
+      // Only a real drag proves the gesture has been learned.
+      if (source === "drag") retireHint();
 
       // "More" opens the details view and deliberately leaves the card
       // in the deck, so you can still like or pass it afterwards.
@@ -79,7 +87,7 @@ export default function SwipeDeck() {
       swipe(top);
       setSwipeCount(bumpSwipeCount());
     },
-    [top, addMatch, swipe, navigate, dismissHint]
+    [top, addMatch, swipe, navigate, retireHint]
   );
 
   // Arrow keys mirror the gestures, so the deck is fully usable
@@ -181,7 +189,8 @@ export default function SwipeDeck() {
               depth={index}
               isTop={index === 0}
               onDecide={decide}
-              onDragStart={index === 0 ? dismissHint : undefined}
+              onDragStart={index === 0 ? () => setIsDragging(true) : undefined}
+              onDragEnd={index === 0 ? () => setIsDragging(false) : undefined}
             />
           ))}
         </AnimatePresence>
@@ -189,21 +198,25 @@ export default function SwipeDeck() {
         {/* Shown once, to anyone who has never swiped before. */}
         {top && hintState !== "gone" && (
           <div
-            className={`drag-hint ${hintState === "fading" ? "is-fading" : ""}`}
+            className={`drag-hint ${hintState === "fading" ? "is-fading" : ""} ${
+              isDragging ? "is-dragging" : ""
+            }`}
             aria-hidden="true"
           >
             <span className="drag-hint__side drag-hint__side--left">
               <span className="drag-hint__badge">
                 <IconCross />
               </span>
-              <span className="drag-hint__label">← Pass</span>
+              <span className="drag-hint__label">Drag ←</span>
             </span>
+
+            <span className="drag-hint__nudge">Drag a card</span>
 
             <span className="drag-hint__side drag-hint__side--right">
               <span className="drag-hint__badge">
                 <IconHeart />
               </span>
-              <span className="drag-hint__label">Like →</span>
+              <span className="drag-hint__label">→ Drag</span>
             </span>
           </div>
         )}
